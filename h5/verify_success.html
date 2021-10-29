@@ -1,12 +1,12 @@
 <html>
 <head>
-    <title>一元体育</title>
+    <title>1元体育</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="一元体育">
-    <meta property="og:description" content="一元体育">
-    <meta itemprop="name" content="一元体育"/>
-    <meta itemprop="description" content="一元体育"/>
+    <meta name="description" content="1元体育">
+    <meta property="og:description" content="1元体育">
+    <meta itemprop="name" content="1元体育"/>
+    <meta itemprop="description" content="1元体育"/>
     <meta itemprop="image"
           content="https://qiezizhibo-1300664818.cos.ap-shanghai.myqcloud.com/images/20200330/logo-juesha.png"/>
     <meta property="og:image"
@@ -41,6 +41,9 @@
         }
 
         docReady(async function () {
+            window.addEventListener('popstate', (event) => {
+                navigateBack();
+            });
             var iconLoadingsEl = $("#icon-loading");
             var iconSuccessEl = $("#icon-success");
             var iconFailEl = $("#icon-fail");
@@ -395,7 +398,7 @@
             </div>
         </div>
         <div class="layout-footer">
-            <div>©2021 一元体育</div>
+            <div>©2021 1元体育</div>
         </div>
         <img class="layout-bg-bottom" src="https://www.qiezizhibo.com/face/print/dist/images/bg-bottom.d0dabf54.png"
              alt=""/>

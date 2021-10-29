@@ -8,9 +8,9 @@
     <meta itemprop="name" content="1元体育"/>
     <meta itemprop="description" content="1元体育"/>
     <meta itemprop="image"
-          content="https://qiezizhibo-1300664818.cos.ap-shanghai.myqcloud.com/images/20200330/logo-juesha.png"/>
+          content="https://qiezizhibo-1300664818.cos.ap-shanghai.myqcloud.com/images/20200330/logo-oneyuan.png"/>
     <meta property="og:image"
-          content="https://qiezizhibo-1300664818.cos.ap-shanghai.myqcloud.com/images/20200330/logo-juesha.png"/>
+          content="https://qiezizhibo-1300664818.cos.ap-shanghai.myqcloud.com/images/20200330/logo-oneyuan.png"/>
     <meta HTTP-EQUIV="pragma" CONTENT="no-cache">
     <meta HTTP-EQUIV="Cache-Control" CONTENT="no-store, must-revalidate">
     <meta HTTP-EQUIV="expires" CONTENT="0">
@@ -21,7 +21,7 @@
         }
     </script>
     <link rel="shortcut icon"
-          href="https://qiezizhibo-1300664818.cos.ap-shanghai.myqcloud.com/images/20200330/logo-juesha.png">
+          href="https://qiezizhibo-1300664818.cos.ap-shanghai.myqcloud.com/images/20200330/logo-oneyuan.png">
     <!-- weui 样式 -->
     <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.4.1/weui.min.css"></link>
     <!-- 调试用的移动端 console -->
@@ -41,146 +41,11 @@
         }
 
         docReady(async function () {
-            window.addEventListener('popstate', (event) => {
-                navigateBack();
-            });
-            var verifyToken = getQueryVariable("verifyToken");
-            var type = getQueryVariable("type");
-            var idCardVerify = getQueryVariable("idCardVerify");
-            var titleEl = $("#title");
-            var tipEl = $("#tip");
-            var msgEl = $("#msg");
-            var reVerifyEl = $("#reVerify");
-            // var loadingEl = $("#reVerify-button-loading");
-            reVerifyEl.click(function () {
-                // if(idCardVerify){
-                //     window.history.go(-2);
-                // }else{
-                // window.history.go(-3);
-                // }
-                navigateBack();
-            });
-
-            if (verifyToken != null) {
-                // $.ajax({
-                //     url: "https://www.qiezizhibo.com/service-system/person/verify/request",
-                //     dataType: "json",
-                //     data: {verifyToken: verifyToken},
-                //     success: function (res) {
-                //         if (res && res.data != null) {
-                //             loadingEl.addClass("hidden");
-                //             reVerifyEl.click(navigateBack);
-                //         } else {
-                //             reVerifyEl.click(function () {
-                //                 window.history.go(-3);
-                //             });
-                //         }
-                //     }
-                // });
-                $.ajax({
-                    url: "https://oneyuan.qiezizhibo.com/service-oneyuan-system/person/verify/result",
-                    dataType: "json",
-                    data: {verifyToken: verifyToken, type: type},
-                    success: function (res) {
-                        if (res && res.data != null && res.data.success == false) {
-                            var code = res.data.code;
-                            var msg = res.data.message;
-                            var detail = null;
-                            for (let errorcodeItem of errorCodeMap) {
-                                var errorcodeList = errorcodeItem[0];
-                                var errorDetail = errorcodeItem[1];
-                                var isContains = false;
-                                for (let errorcode of errorcodeList) {
-                                    if (errorcode == code) {
-                                        isContains = true;
-                                    }
-                                }
-                                if (isContains) {
-                                    detail = errorDetail;
-                                }
-                            }
-                            if (msg != null) {
-                                msgEl.html(decodeURIComponent(msg));
-                            } else {
-                                msgEl.addClass("hidden");
-                            }
-                            if (detail != null) {
-                                titleEl.html(detail.title);
-                                tipEl.html(detail.tip);
-                            } else if (msg != null) {
-                                tipEl.html(decodeURIComponent(msg));
-                                msgEl.addClass("hidden");
-                            }
-                        } else {
-                            tipEl.html("连接失败");
-                        }
-                    },
-                    error: function () {
-                        titleEl.html("身份核验失败");
-                    }
-                });
-            }
         })
 
         function navigateBack() {
             wx.miniProgram.navigateBack({delta: 1});
         }
-    </script>
-    <script>
-        function getQueryVariable(variable) {
-            var query = window.location.search.substring(1);
-            var vars = query.split("&");
-            for (var i = 0; i < vars.length; i++) {
-                var pair = vars[i].split("=");
-                if (pair[0] == variable) {
-                    return pair[1];
-                }
-            }
-            return (false);
-        }
-    </script>
-    <script>
-        var errorCodeMap = [
-            [[200], {
-                title: "身份核验成功",
-            }],
-            [[216434, 222202, "223113-223116", "223121-223127", 223129, 216501, 216908, 222356], {
-                title: "身份核验失败",
-                tip: "未检测到人脸，请确保正脸采集且清晰完整"
-            }],
-            [[216507], {
-                title: "身份核验失败",
-                tip: "请避免视频中多人脸出现"
-            }],
-            [[216509], {
-                title: "身份核验失败",
-                tip: "请到安静的环境进行录制"
-            }],
-            [[223120, 223131], {
-                title: "身份核验失败",
-                tip: "请确保是本人操作且正脸采集"
-            }],
-            [[222350, 222355], {
-                title: "公安网图片不存在或质量低",
-                tip: "请到派出所更新身份证照片",
-            }],
-            [["222351-222354", 222360, 216600, 216601, 222037, 222038], {
-                title: "身份核验失败",
-                tip: "请重新尝试",
-            }],
-            [[4, 6, 17, 18, 19, 283437], {
-                title: "服务异常",
-                tip: "服务异常，请稍后再试",
-            }],
-            [[283457], {
-                title: "身份核验失败",
-                tip: "网络不给力，请重试"
-            }],
-            [["216430-216433", 216502, 216505, 216506, 216612, "222203-222206", 222302, 222303, "222901-222916", 222361], {
-                title: "身份核验失败",
-                tip: "网络不给力，请重试"
-            }]
-        ];
     </script>
     <style>
         .hidden {
@@ -369,21 +234,11 @@
                                   fill="#FFBF00" fill-rule="nonzero"></path>
                         </svg>
                     </div>
-                    <div id="title" class="title">身份核验失败</div>
-                    <div id="msg" class="tip">身份核验失败</div>
-                    <div id="tip" class="tip">身份核验失败</div>
+                    <div id="title" class="title">您的操作过于频繁 请稍后再试</div>
+                    <div id="msg" class="tip">每2分钟仅能进行一次核验</div>
                 </div>
                 <div class="p-footer">
-                    <div id="reVerify" class="layout-content__button-wrapper layout-content__button-primary">
-                        <button class="layout-content__button"></button>
-                        <span id="reVerify-button-loading"
-                              class="weui-primary-loading weui-primary-loading_transparent hidden"
-                              style="margin: auto 0;">
-                            <i class="weui-primary-loading__dot"></i>
-                        </span>
-                        <div class="layout-content__button-text">重新核验</div>
-                    </div>
-                    <div class="layout-content__button-wrapper" onclick="navigateBack()">
+                    <div class="layout-content__button-wrapper layout-content__button-primary" onclick="navigateBack()">
                         <button class="layout-content__button"></button>
                         <div class="layout-content__button-text">退出核验</div>
                     </div>
